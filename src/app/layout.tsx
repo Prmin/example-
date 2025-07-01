@@ -1,12 +1,12 @@
-import React from 'react';
-import type { Metadata } from 'next';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import './globals.css';
+import React from "react";
+import type { Metadata } from "next";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title: 'My Tech Journey',
-  description: 'A blog about web development and tech.',
+  title: "My Tech Journey",
+  description: "A blog about web development and tech.",
 };
 
 export default function RootLayout({

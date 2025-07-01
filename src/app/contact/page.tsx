@@ -1,5 +1,5 @@
 // app/page.tsx
-import React from 'react';
+import React from "react";
 // import Sidebar from './components/Sidebar';
 // import PostContent from './components/PostContent';
 

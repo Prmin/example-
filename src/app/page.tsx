@@ -1,15 +1,18 @@
 // app/page.tsx
-import React from 'react';
-import Sidebar from './components/Sidebar';
-import PostContent from './components/PostContent';
-
+import React from "react";
+import Sidebar from "./components/Sidebar";
+import PostContent from "./components/PostContent";
+import HeroSection from "./components/HeroSection";
+import FeatureSection from "./components/FeatureSection";
 export default function HomePage() {
   return (
-    // flex-1 ทำให้ <main> ขยายเต็มพื้นที่ที่เหลือระหว่าง header และ footer
     <main className="flex flex-1 p-4 gap-4">
       <Sidebar />
-      <PostContent />
-      
+      <div className="flex flex-1 flex-col gap-4">
+        <HeroSection />
+        <PostContent />
+        <FeatureSection />
+      </div>
     </main>
   );
 }
