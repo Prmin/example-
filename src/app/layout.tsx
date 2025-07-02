@@ -5,7 +5,7 @@ import Footer from "./components/Footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "My Tech Journey",
+  title: "My Tech Space of PraminO",
   description: "A blog about web development and tech.",
 };
 
