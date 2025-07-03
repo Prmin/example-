@@ -9,7 +9,6 @@ interface Task {
   category: string;
 }
 
-// เอา onSetFocus ออกจาก props
 interface TaskListProps {
   tasks: Task[];
   onToggleComplete: (id: number) => void;
@@ -25,7 +24,6 @@ export default function TaskList({ tasks, onToggleComplete, onDelete }: TaskList
           task={task}
           onToggleComplete={onToggleComplete}
           onDelete={onDelete}
-          // ไม่ต้องส่ง onSetFocus ต่อไปแล้ว
         />
       ))}
     </ul>

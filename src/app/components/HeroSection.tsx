@@ -1,5 +1,6 @@
 import React from "react";
 
+
 export default function HeroSection() {
   return (
     <section className="bg-slate-700 text-white text-center rounded-lg p-12 md:p-20">

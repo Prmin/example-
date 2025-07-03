@@ -1,8 +1,7 @@
 'use client';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AddTaskForm from "./components/AddTaskForm";
 import TaskList from "./components/TaskList";
-
 
 interface Task {
   id: number;
@@ -14,21 +13,44 @@ interface Task {
 const categories = ["All", "Personal", "Work", "Study"];
 
 export default function TodoListPage() {
-  const [tasks, setTasks] = useState<Task[]>([
-    { id: 1, text: "Learn Next.js", completed: true, category: "Study" },
-    { id: 2, text: "Build a To-Do App", completed: false, category: "Work" },
-    { id: 3, text: "Go to the gym", completed: false, category: "Personal" },
-  ]);
-
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [activeFilter, setActiveFilter] = useState("All");
 
+  // 1. สร้าง "ธง" ขึ้นมา โดยเริ่มแรกจะยังไม่โหลด (false)
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // 2. useEffect สำหรับ "โหลด" ข้อมูล (ทำงานครั้งเดียวตอนเปิดหน้า)
+  useEffect(() => {
+    try {
+      const storedTasks = localStorage.getItem('tasks');
+      if (storedTasks) {
+        setTasks(JSON.parse(storedTasks));
+      }
+    } catch (error) {
+      console.error("Failed to load tasks from localStorage", error);
+    }
+    // เมื่อโหลดเสร็จแล้ว (ไม่ว่าจะเจอข้อมูลหรือไม่) ให้ปักธงว่า "โหลดเสร็จแล้วนะ"
+    setIsLoaded(true);
+  }, []);
+
+  // 3. useEffect สำหรับ "บันทึก" ข้อมูล
+  useEffect(() => {
+    // เพิ่มเงื่อนไข: ถ้ายังโหลดข้อมูลครั้งแรกไม่เสร็จ (isLoaded เป็น false) ให้ออกไปเลย ไม่ต้องทำอะไร
+    if (!isLoaded) {
+      return; 
+    }
+
+    try {
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    } catch (error) {
+      console.error("Failed to save tasks to localStorage", error);
+    }
+    // ฟังก์ชันนี้จะทำงานทุกครั้งที่ tasks เปลี่ยนแปลง (แต่ต้องหลัง isLoaded เป็น true แล้วเท่านั้น)
+  }, [tasks, isLoaded]);
+
+  // === LOGIC และ UI ที่เหลือทั้งหมดเหมือนเดิม ไม่ต้องแก้ไข ===
   const handleAddTask = (text: string, category: string) => {
-    const newTask: Task = {
-      id: Date.now(),
-      text: text,
-      completed: false,
-      category: category,
-    };
+    const newTask: Task = { id: Date.now(), text, completed: false, category };
     setTasks([...tasks, newTask]);
   };
 
@@ -55,9 +77,7 @@ export default function TodoListPage() {
         <h1 className="text-3xl font-bold text-slate-800 mb-6 text-center">
           My To-Do List
         </h1>
-
         <AddTaskForm onAddTask={handleAddTask} />
-
         <div className="flex justify-center gap-2 mb-6 border-b pb-4">
           {categories.map((cat) => (
             <button
@@ -73,7 +93,6 @@ export default function TodoListPage() {
             </button>
           ))}
         </div>
-        
         <TaskList
           tasks={filteredTasks}
           onToggleComplete={handleToggleComplete}
